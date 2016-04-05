@@ -75,14 +75,25 @@ eval (0 : nat) + 1 + 1
 
 definition beq_nat : nat → nat → bool
 | 0 0 := tt
-| 0 _ := ff
+| 0 (succ m) := ff
 | (succ n) 0 := ff
 | (succ n) (succ m) := beq_nat n m
+
+lemma beq_nat_eq : ∀ n m, beq_nat n m = tt → n = m
+| 0 0 := λe, rfl
+| 0 (succ m) := by intro; contradiction
+| (succ n) 0 := by intro; contradiction
+| (succ n) (succ m) := λe, congr_arg succ (beq_nat_eq n m e)
 
 definition ble_nat : nat → nat → bool
 | 0 _ := tt
 | (succ n) 0 := ff
 | (succ n) (succ m) := ble_nat n m
+
+lemma ble_nat_le : ∀ n m, ble_nat n m = tt → n ≤ m
+| 0 m := λe, !zero_le
+| (succ n) 0 := by intro; contradiction
+| (succ n) (succ m) := λe, succ_le_succ (ble_nat_le n m e)
 
 -- Exercise: 2 stars (blt_nat)
 definition blt_nat (n m : nat) : bool := ble_nat n m && (bnot (beq_nat n m))

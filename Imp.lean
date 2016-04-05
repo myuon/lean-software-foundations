@@ -500,7 +500,9 @@ lemma n_neq_n_plus_2 : ∀ (n : nat), n ≠ n + 2 := proof
       ... = pred 2 : k ▸ rfl
       ... = 1 : rfl
   qed,
-  show n ≠ n + 2, from (λk, Hp2 (!nat.add_left_cancel k))
+  show n ≠ n + 2, proof
+    show n + 0 ≠ n + 2, from (λk, Hp2 (!nat.add_left_cancel k))
+  qed
 qed
 
 theorem plus2_spec : ∀st n st',

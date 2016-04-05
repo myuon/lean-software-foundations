@@ -38,8 +38,12 @@ take n m, rfl
 theorem plus_Sn_m : ∀ (n m : nat), succ (n + m) = succ n + m :=
 take n m, by rewrite succ_add
 
+print plus_0_r
+
 theorem plus_comm : ∀ (n m : nat), n + m = m + n
-| n zero := by rewrite plus_0_r; rewrite plus_0_l
+| n zero := calc
+  n + 0 = n : plus_0_r n
+  ... = 0 + n : plus_0_l n
 | n (succ m) := calc
   n + succ m = succ (n + m) : plus_n_Sm
   ... = succ (m + n) : plus_comm
